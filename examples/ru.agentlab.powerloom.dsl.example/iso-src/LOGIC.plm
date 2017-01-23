@@ -1,0 +1,17 @@
+(in-package "STELLA")
+
+(defmodule  "LOGIC")
+
+(in-module "LOGIC")
+
+(defconcept COMPUTED-PROCEDURE (THING)
+  :documentation "Each instance denotes a programming language 
+function that computes some procedure.  The slot 'procedure-name'
+provides the name of the procedure.  The slot 'procedure-function'
+points to the STELLA function object carrying out the computation.
+If neither is supplied, the procedure will be looked up by extracting
+its name from the name of the instance.  Pointing to a function object
+instead of just the code gives us access to argument type information.
+Note that we support external non-STELLA functions by creating a dummy
+STELLA function object during registration of the computation (see
+`register-computation-function' and friends).")

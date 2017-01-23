@@ -1,0 +1,684 @@
+grammar ru.agentlab.powerloom.dsl.PowerloomDsl hidden(WS, ML_COMMENT, SL_COMMENT) // with org.eclipse.xtext.common.Terminals
+
+generate powerloomDsl "http://www.agentlab.ru/powerloom/dsl/PowerloomDsl"
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+
+//--------------------------------------------------------------------------------------------------------------------//
+//                                          MainRule                                                                  //
+//--------------------------------------------------------------------------------------------------------------------//
+PowerloomDsl	:	forms += Form*	;
+
+// Legal expressions in PowerLoom are forms, which are either a statement or a definition
+Form	:	Definition | DefModule | Command ;
+
+
+//--------------------------------------------------------------------------------------------------------------------//
+//                                          DataTypeRules                                                             //
+//--------------------------------------------------------------------------------------------------------------------//	
+OpenBrace: 	'(';
+CloseBrace:	')';
+Colon:		':';
+
+// Data type, that consist of ID's or INT's. This dataType is used in names of all definitions.
+PowerLoomName	
+	:	ID 
+	|	INT
+//	|	'documentation'
+	;
+
+// Data type, that consist of ID's or STRING's. This dataType is used in <b>Module</b> and <b>Rule</b> definitions.
+StringOrID : STRING	| PowerLoomName ;
+	
+TruthValue : 'TRUE' | 'FALSE' ;
+		
+SelfVar : '?self' ;
+
+
+//--------------------------------------------------------------------------------------------------------------------//
+//                                          Definitions                                                               //
+//--------------------------------------------------------------------------------------------------------------------//
+//PowerLoom supports two distinct categories of definitions � relation definitions (including
+//concept and function definitions) and rule definitions. A relation definition introduces a
+//new logical constant, and states some facts about that constant (e.g., who its parents are in
+//a subsumption taxonomy). A rule definitions binds a new constant to a proposition (so that
+//the constant denotes the proposition) and asserts the truth of that proposition. Usually, the
+//proposition asserted by a defrule is an implication. The assertional truth of a proposition
+//defined by a rule can be altered by asserting or retracting the constant that denotes the
+//proposition.
+
+//--------------------------------------------KeywordOption--------
+
+//TODO: Validation of types
+KeywordOptions
+	:	Colon 
+		option = [Definition | PowerLoomName] 
+		terms += Term?
+	;
+
+//-----------------------------------------------DefModule-------
+
+DefModuleOperator: 'defmodule';
+DefModule returns Module
+	:	OpenBrace 
+		DefModuleOperator 
+		name = StringOrID
+		(options += KeywordOptions)*
+		CloseBrace
+	;
+
+//-----------------------------------------------Definition--------
+
+Definition returns Definition
+	:	RelDefinition 
+	|	DefObject
+	|	DefInstance
+	|	Rule
+	|	DefProposition
+	;
+
+RelDefinition returns Definition
+	:	DefConcept
+	|	DefRelation
+	|	DefFunction
+	;
+
+TypeDefinition
+	:	OpenBrace {TypeDefinition}
+		(
+		(var = Untyped_Variable? 
+		types += [Definition | PowerLoomName]*) 
+	
+	|	(OpenBrace 
+		var = Untyped_Variable? 
+		types += [Definition | PowerLoomName]* 
+		CloseBrace)
+		)
+		CloseBrace
+	;
+	
+DefconceptOperator:	'defconcept';
+DefConcept returns Concept
+	:	OpenBrace 
+		DefconceptOperator 
+		name = PowerLoomName 
+		superType = TypeDefinition?
+		options += KeywordOptions*
+		CloseBrace
+	;
+	
+DefrelationOperator: 'defrelation';
+DefRelation returns Relation
+	:	OpenBrace 
+		DefrelationOperator
+		name = PowerLoomName
+		OpenBrace 
+		inputVariables += Variable+ 
+		CloseBrace 
+		options += KeywordOptions*
+		CloseBrace
+	;
+	
+DeffunctionOperator: 'deffunction';
+ResultDefinitionOperator: ':->';
+DefFunction returns Function
+	:	OpenBrace 
+		DeffunctionOperator
+		name = PowerLoomName 
+		OpenBrace 
+		inputVariables += Variable+ 
+		CloseBrace
+		(ResultDefinitionOperator
+		outputVariable = Variable)? 
+		options += KeywordOptions*
+		CloseBrace
+	;
+	
+DefruleOperator: 'defrule';
+Rule returns Rule
+	:	OpenBrace 
+		DefruleOperator 
+		name = StringOrID 
+		sentence = Sentence 
+		options += KeywordOptions* 
+		CloseBrace
+	;
+
+DefobjectOperator: 'defobject';
+DefObject returns LogicObject
+	:	OpenBrace 
+		DefobjectOperator 
+		name = PowerLoomName  
+		options += KeywordOptions*
+		CloseBrace
+	;
+	
+DefinstanceOperator: 'definstance';
+DefInstance returns Instance
+	:	OpenBrace
+		DefinstanceOperator 
+		name = PowerLoomName 
+		options += KeywordOptions*
+		CloseBrace
+	;
+	
+DefpropositionOperator: 'defproposition';
+DefProposition returns Proposition
+	:	OpenBrace 
+		DefpropositionOperator 
+		name = PowerLoomName 
+		sentence = Sentence 
+		options += KeywordOptions* 
+		CloseBrace
+	;
+
+
+//--------------------------------------------------------------------------------------------------------------------//
+//                                          Variable                                                                  //
+//--------------------------------------------------------------------------------------------------------------------//
+
+Variable returns Variable
+	:	Typed_Variable 
+	|	Untyped_Variable
+	;
+
+//-----------------------------------------------Definition--------
+
+Typed_Variable returns Variable
+	:	OpenBrace 
+		name = VAR 
+		type = [Definition | PowerLoomName]? 
+		CloseBrace
+	;
+
+Untyped_Variable returns Variable
+	:	name = VAR
+	;
+
+StringDef
+	:	content = (STRING | SelfVar)
+	;
+
+Boolean
+	:	value = TruthValue
+	;
+	
+//Constant returns LogicObject:
+//	name = PowerLoomName;
+
+//------------------------------------------------Refs-------------	
+	
+VariableRef:
+	ref = [Variable | VAR];
+	
+DefinitionRef:
+	ref = [Definition | PowerLoomName];
+	
+//ConstantRef returns LogicObject:
+//	ref = [LogicObject | PowerLoomName];
+
+
+//--------------------------------------------------------------------------------------------------------------------//
+//                                            Term                                                                    //
+//--------------------------------------------------------------------------------------------------------------------//
+//Terms are used to denote objects in the world being described:
+
+Term
+	:	StringDef
+//	|	=>Constant 
+//	|	ConstantRef 	 
+	|	VariableRef
+	|	DefinitionRef 
+	|	Boolean  
+	|	FunctionTerm 
+	|	RelationVarTerm 
+	|	QuantorTerm
+	;
+
+FunctionTerm
+	:	OpenBrace 
+		type = [Definition | PowerLoomName] 
+		terms += Term+
+		CloseBrace
+	;
+
+RelationVarTerm
+	:	OpenBrace 
+		type = VariableRef 
+		terms += Term+
+		CloseBrace
+	;
+	
+//--------------------------------------------QuantorTerm----------
+
+QuantorTerm
+	:	TheQuantorTerm 
+	|	SetOfAllQuantorTerm 
+	|	KappaQuantorTerm 
+	|	ExistQuantorTerm 
+	|	LambdaQuantorTerm 
+	|	ForAllQuantorTerm
+	;
+	
+TheOperator: 'the';
+TheQuantorTerm
+	:	OpenBrace 
+		name = TheOperator 
+		variables += Variable 
+		sentences = Sentence 
+		CloseBrace
+	;
+		
+SetofallOperator: 'setofall';
+SetOfAllQuantorTerm
+	:	OpenBrace 
+		name = SetofallOperator
+		variables += Variable 
+		sentences = Sentence? 
+		CloseBrace
+	;
+	
+KappaOperator: 'kappa';
+KappaQuantorTerm
+	:	OpenBrace 
+		name = KappaOperator 
+		(
+			(variables += Variable) | 
+			(=>OpenBrace variables += Variable+ CloseBrace)
+		) 
+		sentences = Sentence 
+		CloseBrace
+	;
+	
+LambdaOperator: 'lambda';
+LambdaQuantorTerm
+	:	OpenBrace 
+		name = LambdaOperator 
+		(
+			(variables += Variable) | 
+			(=>OpenBrace variables += Variable+ CloseBrace)
+		) 
+		terms += Term 
+		CloseBrace
+	;
+	
+ExistOperator: 'exists';
+ExistQuantorTerm
+	:	OpenBrace 
+		name = ExistOperator
+		(
+			(variables += Variable) | 
+			(=>OpenBrace variables += Variable+ CloseBrace)
+		) 
+		sentence += Sentence 
+		CloseBrace
+	;
+
+ForallOperator:	'forall';
+ForAllQuantorTerm
+	:	OpenBrace 
+		name = ForallOperator
+		(
+			(variables += Variable) | 
+			(=>OpenBrace variables += Variable* CloseBrace)
+		) 
+		sentence += Sentence 
+		sentence2 += Sentence? 
+		CloseBrace
+	;
+
+
+//--------------------------------------------------------------------------------------------------------------------//
+//                                          Sentences                                                                 //
+//--------------------------------------------------------------------------------------------------------------------//
+//Sentences are used to express propositions about the world:
+
+Sentence
+	:	RelationVarSentence  
+//	|	Boolean    
+	|	RelationSentence 
+	|	QuantorSentence
+	;
+
+RelationSentence
+	:	OpenBrace
+		type = [Definition|PowerLoomName] 
+		terms += Term+
+		CloseBrace
+	;
+	
+RelationVarSentence
+	:	OpenBrace 
+		type = VariableRef 
+		terms += Term+
+		CloseBrace
+	;
+	
+//--------------------------------------------QuantorSentence------
+
+QuantorSentence
+	:	ForAllQuantorSentence 
+	|	ExistQuantorSentence
+	;
+
+ForAllQuantorSentence
+	:	OpenBrace 
+		name = ForallOperator
+		(
+			(args += Variable) | 
+			(=>OpenBrace args += Variable* CloseBrace)
+		) 
+		sentence += Sentence 
+		(sentence2 += Sentence)? 
+		CloseBrace
+	;
+
+ExistQuantorSentence
+	:	OpenBrace 
+		name = ExistOperator
+		(
+			(args += Variable) | 
+			(=>OpenBrace args += Variable+ CloseBrace)
+		) 
+		sentence += Sentence 
+		CloseBrace
+	;
+
+
+//--------------------------------------------------------------------------------------------------------------------//
+//                                          Commands                                                                  //
+//--------------------------------------------------------------------------------------------------------------------//
+
+Command
+	:	Ask 
+	|	SimpleCommand 
+	|	ModuleCommand 
+	|	ClassifyCommand 
+	|	FileCommand 
+	|	InDialect 
+	|	FeatureCommand 
+	|	PropositionCommand
+	|	Retrieve
+	|	PackageDeclaration
+	; 
+
+//------------------------------------------------PackageCommand---
+
+PackageDeclarationCommandName:	'in-package';	
+PackageDeclaration returns Package
+	:	OpenBrace 
+		PackageDeclarationCommandName 
+		name = StringOrID 
+		CloseBrace
+	;
+	
+//--------------------------------------------PropositionCommand---
+	
+PropositionCommand returns PropositionCommand
+	:	AssertCommand 
+	|	DenyCommand 
+	|	PresumeCommand 
+	|	RetractCommand
+	;
+	
+AssertCommandName:'assert';
+AssertCommand
+	:	OpenBrace 
+		name = AssertCommandName 
+		sentence = Sentence 
+		CloseBrace
+	;
+
+DenyCommandName:'deny';	
+DenyCommand
+	:	OpenBrace 
+		name = DenyCommandName 
+		sentence = Sentence 
+		CloseBrace
+	;
+	
+PresumeCommandName:'presume';	
+PresumeCommand
+	:	OpenBrace 
+		name = PresumeCommandName 
+		sentence = Sentence 
+		CloseBrace
+	;
+	
+RetractCommandName:'retract';
+RetractCommand 
+	:	OpenBrace 
+		name = RetractCommandName
+		sentence = Sentence 
+		CloseBrace
+	;
+
+//----------------------------------------------------AskCommand---
+
+AskCommandName:	'ask';
+Ask
+	:	OpenBrace 
+		name = AskCommandName 
+		sentence = Sentence 
+//	(
+//		(inferenceLevel?=':inference-level')? & 
+//		(assertion?=':assertion')? &
+//		(refutation?=':refutation')? & 
+//		(':timeout' timeout=FLOAT)? & 
+//		(':dont-optimize?' dontOptimize = BOOLEAN)? &
+//		(':three-valued?' threeValued = BOOLEAN)? & 
+//		(matchMode?=':match-mode')? & (whynotDeep?=':whynot-deep')? &
+//		(':minimum-score' minimumScore=FLOAT)? & 
+//		(':module' module=[Module|STRING])?
+//	) 
+		CloseBrace
+	;
+
+//------------------------------------------------RetrieveCommand--
+
+AllOperator:	'all';
+
+//NOTE: need special ValueConverter
+Cardinality returns ecore::EIntegerObject
+	:	INT 
+	|	AllOperator
+	;
+	
+RetrieveOperator:	'retrieve';
+Retrieve
+	:	OpenBrace 
+		name = RetrieveOperator 
+		cardinality = Cardinality? 
+		(
+			(
+				(var += Variable) | 
+				(=>OpenBrace var += Variable+ CloseBrace)
+			)? 
+			sentence = Sentence
+		)? 
+		CloseBrace
+	;
+	
+//-------------------------------------------------SimpleCommand---
+	
+SimpleCommandName
+	:	'clear-caches' 
+	|	'copyright' 
+	|	'current-inference-level' 
+	|	'get-load-path' 
+	|	'load-cmd-lne-files' 
+	|	'powerloom-information' 
+	|	'print-features' 
+	|	'pop-load-path' 
+	|	'process-definitions' 
+	|	'reset-features' 
+	|	'reset-powerloom' 
+	|	'demo'
+	;
+	
+SimpleCommand
+	:	OpenBrace 
+		name = SimpleCommandName 
+		CloseBrace
+	;
+
+//-------------------------------------------------ModuleCommand---
+
+ModuleCommandName
+	:	'clear-module' 
+	|	'clear-instances'
+	|	'in-module'
+	|	'cc'
+	|	'propagate-constraints'
+	;
+	
+ModuleCommand
+	:	OpenBrace 
+		name = ModuleCommandName 
+		module = [Module|StringOrID]? 
+		CloseBrace
+	;
+
+//-----------------------------------------------ClassifyCommand---
+	
+ClassifyCommandName
+	:	'classify-relations' 
+	|	'classify-instances'
+	;
+	
+ClassifyCommand
+	:	OpenBrace 
+		name =  ClassifyCommandName
+		module = [Module|StringOrID]? 
+		CloseBrace
+	;
+//---------------------------------------------------FileCommand---
+
+FileCommandName
+	:	'add-load-path' 
+	|	'drop-load-path' 
+	|	'load-directory' 
+	|	'load-file' 
+	|	'push-load-path' 
+	|	'set-load-path'
+	;
+	
+FileCommand
+	:	OpenBrace 
+		name = FileCommandName
+		path = STRING 
+		CloseBrace
+	;
+	
+//------------------------------------------------FeatureCommand---
+
+FeatureCommandFeature
+	:	'just-in-time-inference' 
+	|	'iterative-deepening' 
+	|	'trace-subgoals' 
+	|	'trace-solutions' 
+	|	'trace-classifier' 
+	|	'justifications' 
+	|	'emit-thinking-dots'
+	;
+	
+FeatureCommandName
+	:	'set-feature' 
+	|	'unset-feature' 
+	;
+	
+FeatureCommand
+	:	OpenBrace 
+		name = FeatureCommandName
+		Colon? 
+		feature = FeatureCommandFeature 
+		CloseBrace
+	;
+
+//------------------------------------------------DialecttCommand--
+
+Dialect
+	:	'KIF'
+	|	'STELLA'
+	|	'SQL'
+	; 				
+	
+InDialectOperator:	'in-dialect';
+InDialect
+	:	OpenBrace
+		name = InDialectOperator
+		Colon?
+		dialect = Dialect 
+		CloseBrace
+	;		
+
+
+//--------------------------------------------------------------------------------------------------------------------//
+//                                      Terminal rules                                                                //
+//--------------------------------------------------------------------------------------------------------------------//
+//(Please no terminals above, and no rules below...)
+
+
+
+
+// Any sequence of digits.
+terminal INT returns ecore::EInt //overlap wth ID terminal rule, but stands before and has bigger priority 
+	:	DIGIT+
+	;
+	
+// Any sequence of letters, digits or special-signs. A primitive syntactic object.
+terminal ID
+	:	( LETTER | DIGIT | SPECIAL_SIGN ) 
+		( LETTER | DIGIT | SPECIAL_SIGN | '?' )*
+	;
+
+// Special words are those who refer to a variable. All variables are preceded by a question mark.
+terminal VAR	:	'?' ID	;
+	
+// A string is a character sequence including words plus all special charcters
+// (except double quotes) enclosed in double quotes. A double quote can be included in a
+// string if it is preceeded by the escape character �\�.
+terminal STRING	
+	:	'"' ( '\\' ('b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\') | !('\\'|'"') )* '"' 
+	|	"'" ( '\\' ('b'|'t'|'n'|'f'|'r'|'u'|'"'|"'"|'\\') | !('\\'|"'") )* "'" 
+	; 
+	
+// Multi-line comment.
+terminal ML_COMMENT :	'#|' -> '|#' ;
+	
+// Single-line comment.
+terminal SL_COMMENT	:	';'	!('\n'|'\r')*('\r'? '\n')? ;
+
+// White spaces.
+terminal WS :	(' '|'\t'|'\r'|'\n')+ ;
+	
+//any other characters.
+terminal ANY_OTHER	:	.	;
+
+
+//--------------------------------------------Fragments------------	
+// Any english letter sign.
+terminal fragment LETTER	:	'a'..'z'	|	'A'..'Z'	;
+	
+// Any digit sign.
+terminal fragment DIGIT		:	'0'..'9'	;
+
+// All special signs tested in cmd-version of PowerLoom. For example <i>'(defconcept !@$%^&*)'</i>.
+terminal fragment SPECIAL_SIGN
+	:	'!' 
+	| 	'@' 
+	|	'$' 
+	|	'%' 
+	| 	'^' 
+	|	'&' 
+	|	'*' 
+	|	'.' 
+	|	'-' 
+	|	'_' 
+	|	'=' 
+	|	'+' 
+	|	'<' 
+	|	'>' 
+	|	'\u002f' // '/'-sign
+	;
+

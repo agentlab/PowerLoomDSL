@@ -1,0 +1,403 @@
+(in-package "STELLA")
+
+(defmodule "RDL"
+	:documentation "Preliminary OWL native representation of ISO 15926-2, 
+	destined for the ISO 15926-8 representation of ISO 15926-2 entity types. This file was provided by DNV IRM, 
+	based on work in the IOHN project."
+	:shadow (THING CLASS Cardinality)
+;	:case-sensitive? FALSE
+	)
+
+(in-module "RDL")
+
+(defconcept Thing)
+	(defconcept AbstractObject (Thing))
+	 
+		(defconcept Class (AbstractObject) 
+			:documentation "An [abstract_object] is a [thing] that does not exist in space-time.")
+			 
+			(defconcept Cardinality (Class))
+			(defconcept ClassOfAbstractObject (Class))
+				(defconcept ClassOfClass (ClassOfAbstractObject))
+					(defconcept ArithmeticNumber (ClassOfClass))
+						(defconcept IntegerNumber (ArithmeticNumber))
+						(defconcept MultidimensionalNumber (ArithmeticNumber))
+						(defconcept RealNumber (ArithmeticNumber))
+					(defconcept ClassOfClassOfIndividual (ClassOfClass))
+						(defconcept ClassOfClassOfImformationRepresentation (ClassOfClassOfIndividual))
+							(defconcept DocumentDefinition (ClassOfClassOfImformationRepresentation))
+							(defconcept Language (ClassOfClassOfImformationRepresentation))
+							(defconcept RepresentationForm (ClassOfClassOfImformationRepresentation))
+						(defconcept ClassOfProperty (ClassOfClassOfIndividual))
+							(defconcept EnumeratedPropertySet (ClassOfProperty))
+							(defconcept PropertySpace (ClassOfProperty))
+								(defconcept ClassOfShape (PropertySpace))
+								(defconcept MultidimensionalPropertySpace (PropertySpace))
+								(defconcept PropertyRange (PropertySpace))
+								(defconcept SinglePropertyDimension (PropertySpace))
+							(defconcept ClassOfStatus (ClassOfProperty))
+							(defconcept ShapeDimension (ClassOfProperty))
+					(defconcept ClassOfClassOfRelationship (ClassOfClass))
+						(defconcept ClassOfClassOfComposition (ClassOfClassOfRelationship))
+						(defconcept ClassOfClassOfRelationshipWithSignature (ClassOfClassOfRelationship))
+						(defconcept ClassOfClassOfRepresentation (ClassOfClassOfRelationship))
+							(defconcept ClassOfClassOfDefinition (ClassOfClassOfRepresentation))
+							(defconcept ClassOfClassOfDescription (ClassOfClassOfRepresentation))
+							(defconcept ClassOfClassOfIdentification (ClassOfClassOfRepresentation))
+						(defconcept ClassOfClassOfRepresentationTranslation (ClassOfClassOfRelationship))
+						(defconcept ClassOfClassOfResponsibilityForRepresentation (ClassOfClassOfRelationship))
+						(defconcept ClassOfClassOfUsageOfRepresentation (ClassOfClassOfRelationship))
+						(defconcept ClassOfDimensionForShape (ClassOfClassOfRelationship))
+						(defconcept ClassOfNamespace (ClassOfClassOfRelationship))
+							(defconcept ClassOfLeftNamespace (ClassOfNamespace))
+							(defconcept ClassOfRightNamespace (ClassOfNamespace))
+						(defconcept ClassOfScale (ClassOfClassOfRelationship))
+						(defconcept DimensionOfShape (ClassOfClassOfRelationship))
+						(defconcept PropertySpaceForClassOfShapeDimension (ClassOfClassOfRelationship))
+					(defconcept ClassOfNumber (ClassOfClass))
+						(defconcept EnumeratedNumberSet (ClassOfNumber))
+						(defconcept NumberSpace (ClassOfNumber))
+							(defconcept MultidimensionalNumberSpace (NumberSpace))
+							(defconcept NumberRange (NumberSpace))
+					(defconcept ClassOfPropertySpace (ClassOfClass))
+					(defconcept ClassOfShapeDimension (ClassOfClass))
+					(defconcept EnumeratedSetOfClass (ClassOfClass))
+						(defconcept EnumeratedNumberSet (EnumeratedSetOfClass))
+						(defconcept EnumeratedPropertySet (EnumeratedSetOfClass))
+				(defconcept ClassOfMultidimensionalObject (ClassOfAbstractObject))
+				(defconcept ClassOfRelationship (ClassOfAbstractObject))
+					(defconcept ClassOfApproval (ClassOfRelationship))
+					(defconcept ClassOfApprovalByStatus (ClassOfRelationship))
+					(defconcept ClassOfAssertion (ClassOfRelationship))
+					(defconcept ClassOfCauseOfBeginningOfClassOfIndividual (ClassOfRelationship))
+					(defconcept ClassOfCauseOfEndingOfClassOfIndividual (ClassOfRelationship))
+					(defconcept ClassOfClassification (ClassOfRelationship))
+					(defconcept ClassOfCompositionOfIndividual (ClassOfRelationship))
+						(defconcept ClassOfArrangementOfIndividual (ClassOfCompositionOfIndividual))
+							(defconcept ClassOfAssemblyOfIndividual (ClassOfArrangementOfIndividual))
+							(defconcept ClassOfFeatureWholePart (ClassOfArrangementOfIndividual))
+							(defconcept Namespace (ClassOfArrangementOfIndividual))
+								(defconcept LeftNamespace (Namespace))
+								(defconcept RightNamespace (Namespace))
+						(defconcept ClassOfPartisipation (ClassOfCompositionOfIndividual))
+						(defconcept ClassOfTemporalWholePart (ClassOfCompositionOfIndividual))
+					(defconcept ClassOfConnectionOfIndividual (ClassOfRelationship))
+						(defconcept ClassOfDirectConnection (ClassOfConnectionOfIndividual))
+						(defconcept ClassOfIndirectConnection (ClassOfConnectionOfIndividual))
+					(defconcept ClassOfFunctionalMapping (ClassOfRelationship))
+						(defconcept ClassOfIsomorphicFunctionalMapping (ClassOfFunctionalMapping))
+							(defconcept ClassOfScaleConversion (ClassOfIsomorphicFunctionalMapping))
+							(defconcept Scale (ClassOfIsomorphicFunctionalMapping))
+								(defconcept MultidimensionalScale (Scale))
+									(defconcept CoordinatSystem (MultidimensionalScale))
+					(defconcept ClassOfInderectProperty (ClassOfRelationship))
+					(defconcept ClassOfIndividualUsedInConnection (ClassOfRelationship))
+					(defconcept ClassOfIntendedRoleAndDomain (ClassOfRelationship))
+					(defconcept ClassOfInvolvmentByReference (ClassOfRelationship))
+					(defconcept ClassOfLifecycleStage (ClassOfRelationship))
+					(defconcept ClassOfPossibleRoleAndDomain (ClassOfRelationship))
+					(defconcept ClassOfRecognition (ClassOfRelationship))
+					(defconcept ClassOfRelationshipWithRelatedEnd1 (ClassOfRelationship))
+					(defconcept ClassOfRelationshipWithRelatedEnd2 (ClassOfRelationship))
+					(defconcept ClassOfRelationshipWithSignature (ClassOfRelationship))
+						(defconcept ClassOfClassOfRelationshipWithSignature (ClassOfRelationshipWithSignature))
+					(defconcept ClassOfRelativeLocation (ClassOfRelationship))
+						(defconcept ClassOfContainmentOfIndividual (ClassOfRelativeLocation))
+					(defconcept ClassOfRepresentationOfThing (ClassOfRelationship))
+						(defconcept ClassOfDefinition (ClassOfRepresentationOfThing))
+						(defconcept ClassOfDescrption (ClassOfRepresentationOfThing))
+						(defconcept ClassOfIdentification (ClassOfRepresentationOfThing))
+					(defconcept ClassOfRepresentationTranslation (ClassOfRelationship))
+					(defconcept ClassOfResponsibilityForRepresentation (ClassOfRelationship))
+					(defconcept ClassOfSpecialisation (ClassOfRelationship))
+					(defconcept ClassOfTemporalSequence (ClassOfRelationship))
+					(defconcept ClassOfUsageOfRepresentation (ClassOfRelationship))
+					(defconcept DimensionOfIndividual (ClassOfRelationship))
+					(defconcept PropertyForShapeDimension (ClassOfRelationship))
+			(defconcept ClassOfIndividual (Class))
+				(defconcept ClassOfArrangedIndividual (ClassOfIndividual))
+					(defconcept ClassOfActivity (ClassOfArrangedIndividual))
+					(defconcept ClassOfAtom (ClassOfArrangedIndividual))
+					(defconcept ClassOfBiologicalMatter (ClassOfArrangedIndividual))
+					(defconcept ClassOfCompositeMaterial (ClassOfArrangedIndividual))
+					(defconcept ClassOfCompound (ClassOfArrangedIndividual))
+					(defconcept ClassOfFeature (ClassOfArrangedIndividual))
+					(defconcept ClassOfFunctionalObject (ClassOfArrangedIndividual))
+					(defconcept ClassOfInanimatePhysicalObject (ClassOfArrangedIndividual))
+					(defconcept ClassOfInformationalObject (ClassOfArrangedIndividual))
+					(defconcept ClassOfInformationalPresentation (ClassOfArrangedIndividual))
+					(defconcept ClassOfInformationalRepresentation (ClassOfArrangedIndividual))
+						(defconcept ClassOfExpressImformationRepresentation (ClassOfInformationalRepresentation))
+							(defconcept ExpressBinary (ClassOfExpressImformationRepresentation))
+							(defconcept ExpressBoolean (ClassOfExpressImformationRepresentation))
+							(defconcept ExpressInteger (ClassOfExpressImformationRepresentation))
+							(defconcept ExpressLogical (ClassOfExpressImformationRepresentation))
+							(defconcept ExpressReal (ClassOfExpressImformationRepresentation))
+							(defconcept ExpressString (ClassOfExpressImformationRepresentation))
+						(defconcept RepresentationOfGregorianDateAndUtcTime (ClassOfInformationalRepresentation))
+					(defconcept ClassOfMolecule (ClassOfArrangedIndividual))
+					(defconcept ClassOfOrganism (ClassOfArrangedIndividual))
+						(defconcept ClassOfPerson (ClassOfOrganism))
+					(defconcept ClassOfOrganization (ClassOfArrangedIndividual))
+					(defconcept ClassOfParticulateMaterial (ClassOfArrangedIndividual))
+					(defconcept ClassOfSubAtomicParticle (ClassOfArrangedIndividual))
+					(defconcept CrystallineStructure (ClassOfArrangedIndividual))
+					(defconcept Phase (ClassOfArrangedIndividual))
+				(defconcept ClassOfEvent (ClassOfIndividual))
+					(defconcept ClassOfPointInTime (ClassOfEvent))
+				(defconcept ClassOfPeriodInTime (ClassOfIndividual))
+				(defconcept IndividualDimension (ClassOfIndividual))
+				(defconcept ParticipatingRoleAndDomain (ClassOfIndividual))
+				(defconcept Property (ClassOfIndividual))
+					(defconcept MultidimensionalProperty (Property))
+					(defconcept Shape (Property))
+				(defconcept Status (ClassOfIndividual))
+			(defconcept RoleAndDomain (Class))
+				(defconcept ParticipatingRoleAndDomain (RoleAndDomain))
+				(defconcept Role (RoleAndDomain))
+		(defconcept MultidimensionalObject (AbstractObject))
+			(defconcept MultidimensionalNumber (MultidimensionalObject))
+			(defconcept MultidimensionalNumberSpace (MultidimensionalObject))
+			(defconcept MultidimensionalProperty (MultidimensionalObject))
+			(defconcept MultidimensionalPropertySpace (MultidimensionalObject))
+			
+		;=========================================================================Relationship====================================================================;
+		(defconcept Relationship (?a AbstractObject))	
+		 
+			;Approval(x) -> exist y(hasApproved(x; y))
+ 			;Approval(x) -> exist y(hasApprover(x; y))
+			(defconcept Approval (?r Relationship)
+				
+				
+				
+				:=> (and (exists	(?y) (hasApproved ?r ?y)) 
+						 (exists	(?x) (hasApprover ?r ?x))) 
+			
+				
+				
+				:documentation "An <u>[approval]</u> is a <u>[relationship]</u> that indicates that a <u>[relationship]</u>
+				has been approved by a [possible_individual] that is an approver.<br/><br/> 
+				If exist concept <b>'Approval'</b> then exist it's roles: 
+				relation <b>'hasApproved'</b> and relation <b>'hasApprover'</b>")
+										
+			;hasApproved(x; y) -> (Approval(x)) TODO:
+			(defrelation hasApproved ((?x Relationship) (?y Relationship))		
+				:=> (Approval ?x)
+				:documentation "If exist relation <b>'hasApproved'</b> then it's range is 'Approval'")
+				 
+			(defrelation hasApprover ((?x Relationshipppppppp) (?y PossibleIndividual))			
+				:=> (Approval ?x) ;hasApprover(x; y) -> (Approval(x))
+				:documentation "If exist relation 'hasApprover' then it's range is 'Approval'")
+				
+			;Approval(x) ^ hasApproved(x y) -> Relationship(y)	 
+			(defrule ApprovalAndHasApproved 											
+				(forall (?x ?y)
+					(=> (and (Approval ?x) (hasApproved ?x ?y))
+						(Relationship ?y))) 
+				:documentation "If exist concept <b>'Approval' and relation 'hasApproved' then 
+				domain of 'hasApproved' is 'Relationship'")
+				
+			;Approval(x) ^ hasApprover(x; y) -> PossibleIndividual(y)	
+			(defrule ApprovalAndHasApprover 											
+				(forall (?x ?y)
+					(=> (and (Approval ?x) (hasApprover ?x ?y))
+						(PossibleIndividual ?y)))
+				:documentation "If exist concept 'Approval' and relation 'hasApprover' then 
+				domain of 'hasApprover' is 'PossibleIndividual'")
+				
+			;Approval(x) ^ hasApprover(x; y) ^ hasApprover(x; z) -> y = z
+			(defrule EqualityOfApprover 												
+				(forall (?x ?y ?z)
+					(=> (and (Approval ?x) (hasApprover ?x ?y) (hasApprover ?x ?z))
+						(= ?y ?z))))
+						
+			;Approval(x) ^ hasApproved(x; y) ^ hasApproved(x; z) -> y = z
+			(defrule EqualityOfApproved 												
+				(forall (?x ?y ?z)
+					(=> (and (Approval ?x) (hasApproved ?x ?y) (hasApproved ?x ?z))
+						(= ?y ?z))))
+	
+
+			(defrelation Approval ((?approved Relationship) (?approver PossibleIndividual))
+				:=> (Relationship Approval)
+			)
+			
+			(defrelation CauseOfEvent ((?caused Event) (?causer Activity)))
+			
+			;; TODO: First TODO assigment, it's WORK!!
+			(defconcept CauseOfEvent (?r Relationship)
+				:=> (and (exists	(?y) (hasCaused ?r ?y)) 
+						 (exists	(?x) (hasCauser ?r ?x))))
+
+			(defrelation hasCaused ((?x Relationship) (?y Event))		
+				:=> (CauseOfEvent ?x))
+				 
+			(defrelation hasCauser ((?x Relationship) (?y Activity))			
+				:=> (CauseOfEvent ?x))
+	
+			(defrule CauseOfEventAndHasCaused 											
+				(forall (?x ?y)
+					(=> (and (CauseOfEvent ?x) (hasCaused ?x ?y))
+						(Event ?y))))
+				
+			(defrule CauseOfEventAndHasCauser 											
+				(forall (?x ?y)
+					(=> (and (CauseOfEvent ?x) (hasCauser ?x ?y))
+						(PossibleIndividual ?y))))
+				
+			(defrule EqualityOfhasCauser 												
+				(forall (?x ?y ?z)
+					(=> (and (CauseOfEvent ?x) (hasCauser ?x ?y) (hasCauser ?x ?z))
+						(= ?y ?z))))
+						
+			(defrule EqualityOfhasCaused 												
+				(forall (?x ?y ?z)
+					(=> (and (CauseOfEvent ?x) (hasCaused ?x ?y) (hasCaused ?x ?z))
+						(= ?y ?z))))
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			(defconcept ClassOfRelationshipWithSignature (Relationship))
+			
+				(defconcept ClassOfClassOfRelationshipWithSignature (ClassOfRelationshipWithSignature))
+			
+			(defrelation Classification ((?classified Thing) (?classifier Class)))
+			
+				(defconcept LowerBoundOfNumberRange (Classification))
+				(defconcept LowerBoundOfPropertyRange (Classification))
+				(defconcept UpperBoundOfNumberRange (Classification))
+				(defconcept UpperBoundOfPropertyRange (Classification))
+				
+			(defconcept ComparsionOfProperty (Relationship))
+			
+			(defrelation CompositionOfIndividual ((?whole PossibleIndividual) (?part PossibleIndividual)))
+			
+				(defrelation ArrangementOfIndividual ((?whole ArrangedIndividual) (?part PossibleIndividual))	; EXPRESS Rediclared Type
+					:=> (CompositionOfIndividual ?whole ?part)) 
+				 
+					(defrelation AssemblyOfIndividual ((?whole ArrangedIndividual) (?part PossibleIndividual))
+						:=> (ArrangementOfIndividual ?whole ?part)) 
+						 
+					(defrelation FeatureWholePart ((?whole ArrangedIndividual) (?part PossibleIndividual))
+						:=> (ArrangementOfIndividual ?whole ?part)) 
+						
+				(defrelation Participation ((?whole Activity) (?part Event))									; EXPRESS Rediclared Type
+					:=> (CompositionOfIndividual ?whole ?part)) 
+				
+				(defrelation TemporalBounding ((?whole PossibleIndividual) (?part Event))						; EXPRESS Rediclared Type
+					:=> (CompositionOfIndividual ?whole ?part)) 
+				
+					(defrelation Beginning ((?whole PossibleIndividual) (?part Event))
+						:=> (TemporalBounding ?whole ?part))
+						
+					(defrelation Ending ((?whole PossibleIndividual) (?part Event))
+						:=> (TemporalBounding ?whole ?part))
+						
+				(defrelation TemporalWholePart ((?whole PossibleIndividual) (?part PossibleIndividual))
+					:=> (CompositionOfIndividual ?whole ?part))
+				
+			(defrelation ConnectionOfIndividual ((?side-1 PossibleIndividual) (?side-2 PossibleIndividual)))
+			
+				(defrelation DirectConnection ((?side-1 PossibleIndividual) (?side-2 PossibleIndividual)) 
+					:=> (ConnectionOfIndividual ?side-1 ?side-2))
+					
+				(defrelation IndirectConnection ((?side-1 PossibleIndividual) (?side-2 PossibleIndividual)) 
+					:=> (ConnectionOfIndividual ?side-1 ?side-2))
+				
+			(defrelation FunctionalMapping ((?input Thing) (?result Thing)))
+			
+				(defrelation DifferenceOfSetOfClass ((?input EnumeratedSetOfClass) (?result Class))				; EXPRESS Rediclared Type
+					:=> (FunctionalMapping ?input ?result))
+					
+				(defrelation IntersectionOfSetOfClass ((?input EnumeratedSetOfClass) (?result Class))			; EXPRESS Rediclared Type
+					:=> (FunctionalMapping ?input ?result))
+					
+				(defrelation UnionOfSetOfClass ((?input EnumeratedSetOfClass) (?result Class)) 					; EXPRESS Rediclared Type
+					:=> (FunctionalMapping ?input ?result))
+					
+				(defrelation PropertyQuantification ((?input Property) (?result ArithmeticNumber))				; EXPRESS Rediclared Type
+					:=> (FunctionalMapping ?input ?result))
+				
+			(defconcept IndirectProperty (Relationship))
+			(defconcept IndividualUsedInConnection (Relationship))
+			(defconcept IntendedRoleAndDomain (Relationship))
+			
+			(defrelation InvolvmentByReference ((?involved Thing) (?involver Activity)))
+			
+			(defrelation LifecycleStage ((?interest PossibleIndividual) (?interested PossibleIndividual)))
+			
+			(defrelation OtherRelation ((?end-1 Thing) (?end-2 Thing)))
+
+			(defconcept PossibleRoleAndDomain (Relationship))
+			
+			(defrelation Recognition ((?recognized Thing) (?recognizing Activity)))
+			
+			(defconcept RelativeLocation (Relationship))
+				(defconcept ContainmentOfIndividual (RelativeLocation))
+			(defconcept RepresentationOfThing (Relationship))
+				(defconcept Defenition (RepresentationOfThing))
+				(defconcept Description (RepresentationOfThing))
+				(defconcept Identification (RepresentationOfThing))
+			(defconcept ResponsibilityForRepresentation (Relationship))
+			
+			(defrelation Specialization ((?superclass Class) (?cubclass Class)))
+			
+				(defconcept BoundaryOfNumberSpace (Specialization))
+				(defconcept BoundaryOfPropertySpace (Specialization))
+				(defconcept SpecializationByDomain (Specialization))
+				(defconcept SpecializationByRole (Specialization))
+				(defconcept SpecializationOfIndividualDimensionFromProperty (Specialization))
+				
+			(defrelation TemporalSequence ((?successor PossibleIndividual) (?predecessor PossibleIndividual)))
+			
+			(defconcept UsageOfRepresentation (Relationship))
+			
+	;=======================================================================PossibleIndividual================================================================;
+	(defconcept PossibleIndividual (Thing)
+		:documentation "A [PossibleIndividual] is a [Thing] that exists in space and time. This includes:<br/>
+			- things where any of the space time dimensions are vanishingly small,<br/>
+			- those that are either all space for any time, or all time and any space,<br/>
+			- the entirety of all space time<br/>
+			- things that actually exist, or have existed,<br/>
+			- things that are fictional or conjectured and possibly exist in the past, present or future,<br/>
+			- temporal parts (states) of other individuals,<br/>
+			- things that have a specific position, but zero extent in one or more dimensions, such as points, lines, and 
+		surfaces. In this context existence is based upon being imaginable within some consistent logic, including actual, 
+		hypothetical, planned, expected, or required individuals.")
+		
+		(defconcept Activity (PossibleIndividual)
+			:documentation "An [activity] is a [possible_individual] that brings 
+			about change by causing the [event] that marks the [beginning], or the [event] that marks the [ending] of a 
+			[possible_individual]. An activity consists of the temporal parts of those members of [possible_individual] 
+			that participate in the activity. The participating temporal parts will be classified by the [participating_role_and_domain] 
+			that indicates the role of the temporal part in the [activity].")
+		
+		(defconcept ActualIndividual (PossibleIndividual)
+			:documentation "An [actual_individual] is a [possible_individual] that is a part of the space-time continuum that we inhabit. 
+			It exists in the present, past, or future of our universe, as opposed to some imagined universe.")
+			
+		(defconcept ArrangedIndividual (PossibleIndividual)
+			:documentation "An [arranged_individual] is a [possible_individual] that has parts that play distinct roles with respect to the whole. 
+			The qualities of an [arranged_individual] are distinct from the qualities of its parts.")
+			
+		(defconcept Event (PossibleIndividual))
+			(defconcept PointInTime (Event))
+			
+		(defconcept PeriodInTime (PossibleIndividual)
+			:documentation "A [period_in_time] is a [possible_individual] that is all space for part of time - a temporal part of the universe.")
+			
+		(defconcept PhysicalObject (PossibleIndividual))
+			(defconcept FunctionalPhysicalObject (PhysicalObject))
+			(defconcept MaterializedPhysicalObject (PhysicalObject))
+			(defconcept SpatialLocation (PhysicalObject))
+			(defconcept Stream (PhysicalObject))
+			
+		(defconcept WholeLifeIndividual (PossibleIndividual)
+			:documentation "A [whole_life_individual] is a [possible_individual] that is a member of a [class_of_individual], and is not a temporal part of any 
+			other [possible_individual] that is also a member of the same [class_of_individual]. A [whole_life_individual] includes its past and future.")

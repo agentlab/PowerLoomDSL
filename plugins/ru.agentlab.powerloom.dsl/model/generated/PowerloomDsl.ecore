@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="powerloomDsl" nsURI="http://www.agentlab.ru/powerloom/dsl/PowerloomDsl"
+    nsPrefix="powerloomDsl">
+  <eClassifiers xsi:type="ecore:EClass" name="PowerloomDsl">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="forms" upperBound="-1"
+        eType="#//Form" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Form">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KeywordOptions">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="option" eType="#//Definition"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="terms" upperBound="-1"
+        eType="#//Term" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Module" eSuperTypes="#//Form">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="options" upperBound="-1"
+        eType="#//KeywordOptions" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Definition" eSuperTypes="#//Form">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="options" upperBound="-1"
+        eType="#//KeywordOptions" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TypeDefinition">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="var" eType="#//Variable"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="types" unique="false" upperBound="-1"
+        eType="#//Definition"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Concept" eSuperTypes="#//Definition">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="superType" eType="#//TypeDefinition"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Relation" eSuperTypes="#//Definition">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="inputVariables" upperBound="-1"
+        eType="#//Variable" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Function" eSuperTypes="#//Definition">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="inputVariables" upperBound="-1"
+        eType="#//Variable" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="outputVariable" eType="#//Variable"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Rule" eSuperTypes="#//Definition">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sentence" eType="#//Sentence"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LogicObject" eSuperTypes="#//Definition"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Instance" eSuperTypes="#//Definition"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Proposition" eSuperTypes="#//Definition">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sentence" eType="#//Sentence"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Variable">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Definition"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="StringDef" eSuperTypes="#//Term">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="content" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Boolean" eSuperTypes="#//Term">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="VariableRef" eSuperTypes="#//Term">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//Variable"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DefinitionRef" eSuperTypes="#//Term">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="ref" eType="#//Definition"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Term"/>
+  <eClassifiers xsi:type="ecore:EClass" name="FunctionTerm" eSuperTypes="#//Term">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Definition"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="terms" upperBound="-1"
+        eType="#//Term" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RelationVarTerm" eSuperTypes="#//Term">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//VariableRef"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="terms" upperBound="-1"
+        eType="#//Term" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="QuantorTerm" eSuperTypes="#//Term">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="variables" upperBound="-1"
+        eType="#//Variable" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="TheQuantorTerm" eSuperTypes="#//QuantorTerm">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sentences" eType="#//Sentence"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SetOfAllQuantorTerm" eSuperTypes="#//QuantorTerm">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sentences" eType="#//Sentence"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="KappaQuantorTerm" eSuperTypes="#//QuantorTerm">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sentences" eType="#//Sentence"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LambdaQuantorTerm" eSuperTypes="#//QuantorTerm">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="terms" upperBound="-1"
+        eType="#//Term" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExistQuantorTerm" eSuperTypes="#//QuantorTerm">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sentence" upperBound="-1"
+        eType="#//Sentence" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ForAllQuantorTerm" eSuperTypes="#//QuantorTerm">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sentence" upperBound="-1"
+        eType="#//Sentence" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sentence2" upperBound="-1"
+        eType="#//Sentence" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Sentence"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RelationSentence" eSuperTypes="#//Sentence">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Definition"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="terms" upperBound="-1"
+        eType="#//Term" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RelationVarSentence" eSuperTypes="#//Sentence">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//VariableRef"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="terms" upperBound="-1"
+        eType="#//Term" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="QuantorSentence" eSuperTypes="#//Sentence">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="args" upperBound="-1" eType="#//Variable"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sentence" upperBound="-1"
+        eType="#//Sentence" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ForAllQuantorSentence" eSuperTypes="#//QuantorSentence">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sentence2" upperBound="-1"
+        eType="#//Sentence" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExistQuantorSentence" eSuperTypes="#//QuantorSentence"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Command" eSuperTypes="#//Form"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Package" eSuperTypes="#//Command"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PropositionCommand" eSuperTypes="#//Command">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sentence" eType="#//Sentence"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AssertCommand" eSuperTypes="#//PropositionCommand"/>
+  <eClassifiers xsi:type="ecore:EClass" name="DenyCommand" eSuperTypes="#//PropositionCommand"/>
+  <eClassifiers xsi:type="ecore:EClass" name="PresumeCommand" eSuperTypes="#//PropositionCommand"/>
+  <eClassifiers xsi:type="ecore:EClass" name="RetractCommand" eSuperTypes="#//PropositionCommand"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Ask" eSuperTypes="#//Command">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sentence" eType="#//Sentence"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Retrieve" eSuperTypes="#//Command">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="cardinality" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EIntegerObject"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="var" upperBound="-1" eType="#//Variable"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sentence" eType="#//Sentence"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SimpleCommand" eSuperTypes="#//Command"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ModuleCommand" eSuperTypes="#//Command">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="module" eType="#//Module"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ClassifyCommand" eSuperTypes="#//Command">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="module" eType="#//Module"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FileCommand" eSuperTypes="#//Command">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="path" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FeatureCommand" eSuperTypes="#//Command">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="feature" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InDialect" eSuperTypes="#//Command">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="dialect" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+</ecore:EPackage>

@@ -1,0 +1,145 @@
+;TODO ssdfd
+(defmodule "STELLA")
+
+(in-module "STELLA")
+
+
+(defconcept FLOAT)
+(defconcept THING)
+(defconcept INTEGER)
+(defconcept INTEGER-INTERVAL)
+(defconcept NUMBER)
+(defconcept CLASS)
+(defconcept STRING
+	:image-url "Light.gif"
+)
+ ;TODO:
+;(defconcept COMPUTED-PROCEDURE)
+
+(defconcept computation-specialist(?c COMPUTED-PROCEDURE))
+
+(defconcept constraint-specialist(?c COMPUTED-PROCEDURE))
+
+(defconcept RELATION-CONSTRAINT)
+(defconcept RELATION-COMPUTATION)
+(defconcept GOES-TRUE-DEMON)
+(defconcept GOES-UNKNOWN-DEMON)
+(defconcept GOES-FALSE-DEMON)
+
+(defconcept assert-synonym-demon)
+(defconcept retract-synonym-demon)
+(defconcept GOES-TRUE-DEMON)
+(defconcept GOES-UNKNOWN-DEMON)
+(defconcept GOES-FALSE-DEMON)
+(defconcept CONTEXT)
+(defconcept PROPOSITION)
+(defconcept IST-specialist)
+(defconcept cut-specialist)
+(defconcept bound-variables-specialist)
+(defconcept fork-specialist)
+(defconcept instance-of-specialist)
+(defconcept subset-of-specialist)
+(defconcept member-of-specialist)
+(defconcept MEMBER-OF-evaluator)
+(defconcept closed-specialist)
+(defconcept empty-specialist)
+(defconcept single-valued-specialist)
+(defconcept 0)
+(defconcept 1)
+(defconcept 2)
+(defconcept 3)
+(defconcept 4)
+(defconcept range-min-cardinality-specialist)
+(defconcept range-max-cardinality-specialist)
+(defconcept INTERVAL-CACHE)
+(defconcept relation-hierarchy-specialist)
+(defconcept PLUS-constraint)
+(defconcept MINUS-constraint)
+(defconcept TIMES-constraint)
+(defconcept DIVIDE-constraint)
+(defconcept SQRT-constraint)
+(defconcept square-root-specialist)
+(defconcept negate-constraint)
+(defconcept INEQUALITY-specialist)
+(defconcept absolute-value-specialist)
+(defconcept INEQUALITY-evaluator)
+(defconcept minimum-of-numbers-specialist)
+(defconcept maximum-of-numbers-specialist)
+(defconcept sum-of-numbers-specialist)
+(defconcept project-column-specialist)
+(defconcept mean-of-numbers-specialist)
+(defconcept median-of-numbers-specialist)
+(defconcept standard-deviation-specialist)
+(defconcept variance-specialist)
+(defconcept subsequence-specialist)
+(defconcept string-match-computation)
+(defconcept string-match-ignore-case-computation)
+(defconcept LENGTH-computation
+	:image-url "Implication.gif"
+)
+(defconcept object-name-computation)
+(defconcept name-to-object-computation)
+(defconcept ARITY-specialist)
+(defconcept different-specialist)
+(defconcept REFLEXIVE-RELATION-specialist)
+(defconcept IRREFLEXIVE-RELATION-specialist)
+(defconcept context-of-computation)
+(defconcept REFUTATION-DISJOINT-specialist)
+(defconcept HAS-PARTITION-MEMBERSHIP-specialist)
+(defconcept holds-specialist (?zs))
+(defconcept proposition-relation-computation (?zs))
+(defconcept proposition-argument-computation (?zs))
+(defconcept proposition-arguments-computation (?zs))
+(defconcept proposition-arity-computation (?zs))
+(defconcept query-specialist (?zs))
+(defconcept leveled-query-specialist (?zs))
+(defconcept range-type-specialist (?zs))
+(defconcept collect-members-specialist (?zs))
+(defconcept nth-element-specialist (?zs))
+(defconcept nth-head-computation (?zs))
+(defconcept nth-rest-computation (?zs))
+(defconcept insert-element-computation (?zs))
+(defconcept string-concatenate-computation (?zs))
+(defconcept CONCEPT-PROTOTYPE-specialist (?zs))
+(defconcept CLASS-PROTOTYPE (?zs))
+
+
+(defconcept length-of-list (?zs))
+
+
+(defrelation shadow (?x (?s STRING)))
+(defrelation includes (?x (?s STRING)))
+(defrelation uses (?x (?s STRING)))
+
+(defrelation fail (?x (?s STRING)))
+(defrelation axioms (?x (?s STRING)))
+(defrelation => (?x (?s STRING))
+;	:image-url "D:/____Diploma/__Projects/__DiplomProject/org.powerloom.tool.ui/computed.gif"
+)
+
+
+ ;//TODO: sdfsdf
+;TODO: sdfsdf
+;TODO ssd
+(defrelation =>> (?x (?s STRING)))
+(defrelation <= (?x (?s STRING)))
+(defrelation <<= (?x (?s STRING)))
+(defrelation <=> (?x (?s STRING)))
+(defrelation <=>> (?x (?s STRING)))
+(defrelation <<=>> (?x (?s STRING)))
+(defrelation <<=> (?x (?s STRING)))
+
+(defrelation and (?x (?s STRING))
+	:image-url "Anzd.gif"
+)
+
+(defrelation = (?x (?s STRING))
+	:image-url "Equation.gif")
+	
+(defrelation or (?x (?s STRING))
+	:image-url "Or.gif"
+)
+(defrelation not (?x (?s STRING)))
+
+(deffunction interval-upper-bound (?z ?zs))
+(deffunction interval-lower-bound (?z ?zs))
