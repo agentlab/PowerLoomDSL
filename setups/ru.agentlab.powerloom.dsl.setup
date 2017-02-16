@@ -115,7 +115,7 @@
         <repository
             url="http://download.eclipse.org/modeling/tmf/xtext/updates/releases/2.10.0/"/>
         <repository
-            url="http://agentlab.ru/p2/orbit/missing-swt-fragments/"/>
+            url="http://agentlab.ru/p2/orbit/missing-swt-fragments/updates/nightly/"/>
       </repositoryList>
     </targlet>
   </setupTask>
